@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_show_list"
+        android:enabled="true"
+        android:icon="@drawable/ic_round_home"
+        android:title="@string/show" />
+    <item
+        android:id="@+id/nav_favorite_show_list"
+        android:enabled="true"
+        android:icon="@drawable/ic_round_favorite"
+        android:title="@string/favorite_show" />
+
+</menu>

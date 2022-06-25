@@ -45,7 +45,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    viewBinding {
+    dataBinding {
         enabled = true
     }
 }
@@ -69,9 +69,15 @@ android.applicationVariants.all { variant ->
 dependencies {
     // Project dependencies
     implementation project(":domain")
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     def lifecycle_version = "2.5.0-rc02"
     def retrofit_version = "2.9.0"
+    def nav_version = "2.3.0-alpha02"
+
+    // Navigation Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
