@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JobsityChallengeApp">
         <activity
+            android:name=".ui.activity.ShowDetailsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.JobsityCallengeApp.NotActionBar"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

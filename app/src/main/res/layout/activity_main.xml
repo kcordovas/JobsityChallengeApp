@@ -22,7 +22,6 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_main"
-            style="@style/Widget.Theme.JobsityChallenge.BottomNavigationView.Colored"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             app:layout_constraintBottom_toBottomOf="parent"

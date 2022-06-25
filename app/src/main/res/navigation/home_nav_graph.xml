@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_show_list"
         android:name="com.kevcordova.jobsitychallenge.ui.fragment.home.ShowListFragment"
-        android:label="fragment_show_list"
+        android:label="@string/show_list"
         tools:layout="@layout/fragment_show_list">
         <action
             android:id="@+id/action_showListFragment_to_favoriteShowListFragment"
@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/nav_favorite_show_list"
         android:name="com.kevcordova.jobsitychallenge.ui.fragment.home.FavoriteShowListFragment"
-        android:label="fragment_favorite_show_list"
+        android:label="@string/my_favorite_show"
         tools:layout="@layout/fragment_favorite_show_list">
         <action
             android:id="@+id/action_favoriteShowListFragment_to_showListFragment"
