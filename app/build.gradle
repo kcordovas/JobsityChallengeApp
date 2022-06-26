@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 def versionMajor = 1
@@ -45,7 +46,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    viewBinding {
+    dataBinding {
         enabled = true
     }
 }
@@ -67,11 +68,20 @@ android.applicationVariants.all { variant ->
 }
 
 dependencies {
+    // Library own
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
     // Project dependencies
     implementation project(":domain")
+    implementation project(":data")
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     def lifecycle_version = "2.5.0-rc02"
     def retrofit_version = "2.9.0"
+    def nav_version = "2.3.0-alpha02"
+
+    // Navigation Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -84,8 +94,6 @@ dependencies {
     // Annotation processor
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
-    // Glide Image
-    implementation "com.github.bumptech.glide:glide:4.13.0"
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
@@ -98,9 +106,12 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.6.21"
 
+    // UI - Design
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    // Glide Image
+    implementation "com.github.bumptech.glide:glide:4.13.0"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

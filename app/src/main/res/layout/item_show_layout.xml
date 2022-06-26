@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/margin_16"
+        android:layout_margin="@dimen/margin_8"
+        android:clickable="true"
+        android:focusable="true"
+        style="?attr/materialCardViewFilledStyle">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_cover_item_show"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                app:shapeAppearance="@style/ShapeAppearance.JobsityChallengeApp.ShowCover"
+                android:src="@drawable/ic_round_image_placeholder"
+                tools:src="@drawable/img"/>
+            <TextView
+                android:id="@+id/text_title_show_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show"
+                android:padding="@dimen/margin_16"
+                android:textColor="?attr/colorOnSurface"
+                style="?attr/textAppearanceHeadline6"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

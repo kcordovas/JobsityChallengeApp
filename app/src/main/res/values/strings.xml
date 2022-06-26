@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">JobsityChallengeApp</string>
+    <string name="show">Show</string>
+    <string name="favorite_show">Favorite Show</string>
+    <string name="show_list">Show List</string>
+    <string name="my_favorite_show">My favorite show</string>
+    <string name="content_description_search_icon">Make search of the list</string>
+    <string name="content_description_filter_icon">Make a filter on list</string>
+    <string name="msg_not_have_favorite_list">You don\'t have Favorite list</string>
+    <string name="content_description_favorite_icon">Start to identify favorite of something</string>
+    <string name="summary">Summary</string>
+    <string name="genres">Genres</string>
+    <string name="release_date">Release Date</string>
+    <string name="episodes">Episodes</string>
+    <string name="content_description_arrow_back">Back to another screen</string>
+    <string name="episode_info">Episode Info</string>
+    <string name="season_number">Season %1$d</string>
+    <string name="chapter_number">Chapter %1$d</string>
+    <string name="season_and_chapter_complex">S %1$d / C %2$d</string>
 </resources>
