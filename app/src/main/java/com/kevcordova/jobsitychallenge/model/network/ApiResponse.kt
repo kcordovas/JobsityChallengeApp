@@ -1,4 +1,4 @@
-package com.kevcordova.jobsitychallenge.api
+package com.kevcordova.jobsitychallenge.model.network
 
 import com.google.gson.annotations.SerializedName
 
@@ -15,17 +15,17 @@ data class ShowResponseServer(
     @SerializedName("premiered") var premiered: String? = null,
     @SerializedName("ended") var ended: String? = null,
     @SerializedName("officialSite") var officialSite: String? = null,
-    @SerializedName("schedule") var schedule: ScheduleServer? = ScheduleServer(),
-    @SerializedName("rating") var rating: RatingServer? = RatingServer(),
+    @SerializedName("schedule") var schedule: Schedule? = Schedule(),
+    @SerializedName("rating") var rating: Rating? = Rating(),
     @SerializedName("weight") var weight: Int? = null,
-    @SerializedName("network") var network: NetworkServer? = NetworkServer(),
-    @SerializedName("webChannel") var webChannel: String? = null,
-    @SerializedName("dvdCountry") var dvdCountry: String? = null,
-    @SerializedName("externals") var externals: ExternalsServer? = ExternalsServer(),
-    @SerializedName("image") var image: ImageServer? = ImageServer(),
+    @SerializedName("network") var network: Network? = Network(),
+    @SerializedName("webChannel") var webChannel: WebChannel? = WebChannel(),
+    @SerializedName("dvdCountry") var dvdCountry: DvdCountry? = DvdCountry(),
+    @SerializedName("externals") var externals: Externals? = Externals(),
+    @SerializedName("image") var image: Image? = Image(),
     @SerializedName("summary") var summary: String? = null,
     @SerializedName("updated") var updated: Int? = null,
-    @SerializedName("_links") var Links: LinksServer? = LinksServer()
+    @SerializedName("_links") var _links: Links? = Links()
 )
 
 data class EpisodeResponseServer(
@@ -39,26 +39,26 @@ data class EpisodeResponseServer(
     @SerializedName("airtime") var airtime: String? = null,
     @SerializedName("airstamp") var airstamp: String? = null,
     @SerializedName("runtime") var runtime: Int? = null,
-    @SerializedName("rating") var rating: RatingServer? = RatingServer(),
-    @SerializedName("image") var image: ImageServer? = ImageServer(),
+    @SerializedName("rating") var rating: Rating? = Rating(),
+    @SerializedName("image") var image: Image? = Image(),
     @SerializedName("summary") var summary: String? = null,
-    @SerializedName("_links") var Links: EpisodeLinksServer? = EpisodeLinksServer()
+    @SerializedName("_links") var _links: EpisodeLinks? = EpisodeLinks()
 )
 
-data class ScheduleServer(
+data class Schedule(
 
     @SerializedName("time") var time: String? = null,
     @SerializedName("days") var days: ArrayList<String> = arrayListOf()
 
 )
 
-data class RatingServer(
+data class Rating(
 
     @SerializedName("average") var average: Double? = null
 
 )
 
-data class CountryServer(
+data class Country(
 
     @SerializedName("name") var name: String? = null,
     @SerializedName("code") var code: String? = null,
@@ -66,16 +66,16 @@ data class CountryServer(
 
 )
 
-data class NetworkServer(
+data class Network(
 
     @SerializedName("id") var id: Int? = null,
     @SerializedName("name") var name: String? = null,
-    @SerializedName("country") var country: CountryServer? = CountryServer(),
+    @SerializedName("country") var country: Country? = Country(),
     @SerializedName("officialSite") var officialSite: String? = null
 
 )
 
-data class ExternalsServer(
+data class Externals(
 
     @SerializedName("tvrage") var tvrage: Int? = null,
     @SerializedName("thetvdb") var thetvdb: Int? = null,
@@ -83,34 +83,54 @@ data class ExternalsServer(
 
 )
 
-data class ImageServer(
+data class Image(
 
     @SerializedName("medium") var medium: String? = null,
     @SerializedName("original") var original: String? = null
 
 )
 
-data class SelfServer(
+data class Self(
 
     @SerializedName("href") var href: String? = null
 
 )
 
-data class PreviousEpisodeServer(
+data class PreviousEpisode(
 
     @SerializedName("href") var href: String? = null
 
 )
 
-data class LinksServer(
+data class Links(
 
-    @SerializedName("self") var self: SelfServer? = SelfServer(),
-    @SerializedName("previousepisode") var previousepisode: PreviousEpisodeServer? = PreviousEpisodeServer()
+    @SerializedName("self") var self: Self? = Self(),
+    @SerializedName("previousepisode") var previousepisode: PreviousEpisode? = PreviousEpisode()
 
 )
 
-data class EpisodeLinksServer(
+/**
+ * Example of a show that don't show null on [ShowResponseServer.webChannel]
+ * {"id":2,"name":"Hulu","country":{"name":"United States","code":"US","timezone":"America/New_York"}
+ */
+data class WebChannel(
+    @SerializedName("id") var id: Int? = null,
+    @SerializedName("name") var name: String? = null,
+    @SerializedName("country") var country: Country? = Country()
+)
 
-    @SerializedName("self") var self: SelfServer? = SelfServer()
+/**
+ * Example of dvd Country that don't show null on [ShowResponseServer.dvdCountry]
+ * {"name":"United States","code":"US","timezone":"America/New_York"}
+ */
+data class DvdCountry(
+    @SerializedName("name") var name: String? = null,
+    @SerializedName("code") var code: String? = null,
+    @SerializedName("timezone") var timezone: String? = null
+)
+
+data class EpisodeLinks(
+
+    @SerializedName("self") var self: Self? = Self()
 
 )

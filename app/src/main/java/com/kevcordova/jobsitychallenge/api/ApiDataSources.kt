@@ -4,6 +4,8 @@ import com.kevcordova.jobsitychallenge.data.RemoteEpisodeDataSource
 import com.kevcordova.jobsitychallenge.data.RemoteShowDataSource
 import com.kevcordova.jobsitychallenge.domain.Episode
 import com.kevcordova.jobsitychallenge.domain.Show
+import com.kevcordova.jobsitychallenge.model.mappers.toEpisode
+import com.kevcordova.jobsitychallenge.model.mappers.toShow
 
 class ShowRetrofitDataSource(
     showRequest: ShowRequest
