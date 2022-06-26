@@ -7,12 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.kevcordova.jobsitychallenge.R
 import com.kevcordova.jobsitychallenge.databinding.FragmentEpisodeInfoFullscreenBinding
+import com.kevcordova.jobsitychallenge.ui.fragment.presenter.EpisodeViewModel
 
 /**
  * An example full-screen fragment that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 class EpisodeInfoFullscreenFragment : DialogFragment() {
+
+    private val episodeSharedViewModel by lazy {
+        EpisodeViewModel()
+    }
 
     private var _binding: FragmentEpisodeInfoFullscreenBinding? = null
 
@@ -44,9 +49,8 @@ class EpisodeInfoFullscreenFragment : DialogFragment() {
     override fun onStart() {
         super.onStart()
         dialog?.let {
-            val width = ViewGroup.LayoutParams.MATCH_PARENT
-            val height = ViewGroup.LayoutParams.MATCH_PARENT
-            it.window?.setLayout(width, height)
+            val widthHeightLayout = ViewGroup.LayoutParams.MATCH_PARENT
+            it.window?.setLayout(widthHeightLayout, widthHeightLayout)
         }
     }
 
