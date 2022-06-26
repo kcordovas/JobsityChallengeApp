@@ -45,6 +45,11 @@ data class EpisodeResponseServer(
     @SerializedName("_links") var _links: EpisodeLinks? = EpisodeLinks()
 )
 
+data class ShowSearchResponseServer(
+    @SerializedName("score") var score: Double? = null,
+    @SerializedName("show") var show: ShowResponseServer? = ShowResponseServer()
+)
+
 data class Schedule(
 
     @SerializedName("time") var time: String? = null,

@@ -2,12 +2,12 @@ package com.kevcordova.jobsitychallenge.ui.fragment.home
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.baseandroidmodulekevcordova.extensions.showShortToast
@@ -17,6 +17,7 @@ import com.kevcordova.jobsitychallenge.api.ShowRetrofitDataSource
 import com.kevcordova.jobsitychallenge.data.RemoteShowDataSource
 import com.kevcordova.jobsitychallenge.data.ShowRepository
 import com.kevcordova.jobsitychallenge.databinding.FragmentShowListBinding
+import com.kevcordova.jobsitychallenge.extensions.doAfterTextChanged
 import com.kevcordova.jobsitychallenge.model.mappers.toParcelable
 import com.kevcordova.jobsitychallenge.presenter.Event
 import com.kevcordova.jobsitychallenge.presenter.ShowViewModel
@@ -24,6 +25,7 @@ import com.kevcordova.jobsitychallenge.ui.activity.ShowDetailsActivity
 import com.kevcordova.jobsitychallenge.ui.adapters.ShowAndEpisodeHomeRecyclerViewAdapter
 import com.kevcordova.jobsitychallenge.ui.adapters.base.BaseRecyclerViewItem
 import com.kevcordova.jobsitychallenge.usescases.GetAllShowUseCase
+import com.kevcordova.jobsitychallenge.usescases.SearchByNameShowUseCase
 
 /**
  * A simple [Fragment] subclass.
@@ -45,8 +47,12 @@ class ShowListFragment : Fragment() {
     private val getAllShowUseCase: GetAllShowUseCase by lazy {
         GetAllShowUseCase(showRepository)
     }
+    private val getSearchByNameShowUseCase: SearchByNameShowUseCase by lazy {
+        SearchByNameShowUseCase(showRepository)
+    }
 
     private val showListRecyclerViewAdapter = ShowAndEpisodeHomeRecyclerViewAdapter()
+    private var isSearchingShow: Boolean = false
 
     private val showSharedViewModel: ShowViewModel by activityViewModels()
     private lateinit var binding: FragmentShowListBinding
@@ -73,8 +79,23 @@ class ShowListFragment : Fragment() {
             Observer(this::manageNavigationEvents)
         )
         showSharedViewModel.run {
-            setUseCase(getAllShowUseCase)
+            setUseCase(getAllShowUseCase, getSearchByNameShowUseCase)
             listShowAll()
+        }
+
+        binding.searchInput.doAfterTextChanged {
+            if (it.isNullOrEmpty()) {
+                if (showListRecyclerViewAdapter.items.isEmpty()) {
+                    showSharedViewModel.listShowAll()
+                } else {
+                    showListRecyclerViewAdapter.items = emptyList()
+                    showSharedViewModel.listShowAll()
+                }
+            }
+            if (!isSearchingShow) {
+                showSharedViewModel.search(it ?: "")
+                isSearchingShow = true
+            }
         }
     }
 
@@ -82,10 +103,17 @@ class ShowListFragment : Fragment() {
         events.getContentIfNotHandle()?.let { nav ->
             when (nav) {
                 is ShowViewModel.ShowListNavigation.ShowListAsRecyclerViewItem -> nav.run {
+                    isSearchingShow = false
                     showListRecyclerViewAdapter.items = showList
                 }
                 is ShowViewModel.ShowListNavigation.ShowListError -> nav.run {
-                    activity?.showShortToast(throwable.message ?: "Error on list")
+                    when (throwable) {
+                        is ArrayStoreException -> {
+                            isSearchingShow = false
+                            showListRecyclerViewAdapter.items = emptyList()
+                        }
+                        else -> activity?.showShortToast(throwable.message ?: "Error on list")
+                    }
                 }
                 ShowViewModel.ShowListNavigation.HideLoading -> binding.progressLinearShowList.visibility =
                     View.GONE
@@ -97,7 +125,8 @@ class ShowListFragment : Fragment() {
 
     private fun manageItemClickListener() {
         showListRecyclerViewAdapter.itemClickListener = { _, item, _ ->
-            val showRecyclerViewItem: BaseRecyclerViewItem.ShowRecyclerViewItem? = if (item is BaseRecyclerViewItem.ShowRecyclerViewItem) item else null
+            val showRecyclerViewItem: BaseRecyclerViewItem.ShowRecyclerViewItem? =
+                if (item is BaseRecyclerViewItem.ShowRecyclerViewItem) item else null
             showRecyclerViewItem?.run {
                 val intent = Intent(activity, ShowDetailsActivity::class.java).apply {
                     putExtra(PARAM_SHOW_ITEM, this@run.toParcelable())

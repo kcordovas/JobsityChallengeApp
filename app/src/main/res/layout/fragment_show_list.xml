@@ -55,7 +55,7 @@
                 android:layout_marginEnd="@dimen/margin_16"
                 android:contentDescription="@string/content_description_filter_icon"
                 android:onClick="@{() -> fragment.filter()}"
-                android:src="@drawable/ic_round_filter_list"
+                android:src="@drawable/ic_round_filter"
                 app:layout_constraintBottom_toBottomOf="@id/search_input_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/search_input_layout" />

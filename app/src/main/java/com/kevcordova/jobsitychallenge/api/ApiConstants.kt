@@ -7,6 +7,7 @@ package com.kevcordova.jobsitychallenge.api
  * @author kevc77
  */
 object ApiConstants {
+    const val ENDPOINT_SEARCH = "search/"
     const val ENDPOINT_SHOW = "shows"
     const val ENDPOINT_SHOW_WITH_SLASH = "shows/"
     const val ENDPOINT_EPISODE = "episodes"
