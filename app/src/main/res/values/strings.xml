@@ -14,4 +14,6 @@
     <string name="episodes">Episodes</string>
     <string name="content_description_arrow_back">Back to another screen</string>
     <string name="episode_info">Episode Info</string>
+    <string name="season_number">Season %1$d</string>
+    <string name="chapter_number">Chapter %1$d</string>
 </resources>

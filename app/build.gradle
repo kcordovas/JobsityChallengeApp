@@ -67,6 +67,8 @@ android.applicationVariants.all { variant ->
 }
 
 dependencies {
+    // Library own
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
     // Project dependencies
     implementation project(":domain")
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -90,8 +92,6 @@ dependencies {
     // Annotation processor
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
-    // Glide Image
-    implementation "com.github.bumptech.glide:glide:4.13.0"
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
