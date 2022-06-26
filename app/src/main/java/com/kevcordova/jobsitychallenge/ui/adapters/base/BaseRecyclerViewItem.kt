@@ -15,4 +15,10 @@ sealed class BaseRecyclerViewItem {
         val season: Int,
         val imageUrl: String
     ) : BaseRecyclerViewItem()
+
+    class ShowRecyclerViewItem(
+        val id: Int,
+        val title: String,
+        val imageUrl: String
+    ) : BaseRecyclerViewItem()
 }
