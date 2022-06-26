@@ -2,7 +2,6 @@ package com.kevcordova.jobsitychallenge.presenter
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevcordova.jobsitychallenge.model.mappers.toShowRecyclerViewItem
 import com.kevcordova.jobsitychallenge.ui.adapters.base.BaseRecyclerViewItem
@@ -10,7 +9,7 @@ import com.kevcordova.jobsitychallenge.usescases.GetAllShowUseCase
 import kotlinx.coroutines.launch
 import java.lang.NullPointerException
 
-class ShowViewModel : ViewModel() {
+class ShowViewModel : ViewModelBase() {
     private var allShowUseCase : GetAllShowUseCase? = null
 
     private val _showListEvent = MutableLiveData<Event<ShowListNavigation>>()
@@ -32,8 +31,6 @@ class ShowViewModel : ViewModel() {
             _showListEvent.value = generateEvent(ShowListNavigation.HideLoading)
         }
     }
-
-    private fun <T> generateEvent(nav: T) : Event<T> = Event(nav)
 
     // Navigation
     sealed class ShowListNavigation {

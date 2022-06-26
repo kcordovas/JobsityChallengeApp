@@ -13,7 +13,6 @@ fun Show.toShowRecyclerViewItem() = BaseRecyclerViewItem.ShowRecyclerViewItem(
 fun Episode.toEpisodeRecyclerViewItem() = BaseRecyclerViewItem.EpisodeRecyclerViewItem(
     id,
     name,
-    summary,
     numberChapter,
     season,
     imageUrl

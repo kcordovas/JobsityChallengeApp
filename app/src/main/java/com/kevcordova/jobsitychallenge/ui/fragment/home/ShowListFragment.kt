@@ -17,10 +17,11 @@ import com.kevcordova.jobsitychallenge.api.ShowRetrofitDataSource
 import com.kevcordova.jobsitychallenge.data.RemoteShowDataSource
 import com.kevcordova.jobsitychallenge.data.ShowRepository
 import com.kevcordova.jobsitychallenge.databinding.FragmentShowListBinding
+import com.kevcordova.jobsitychallenge.model.mappers.toParcelable
 import com.kevcordova.jobsitychallenge.presenter.Event
 import com.kevcordova.jobsitychallenge.presenter.ShowViewModel
 import com.kevcordova.jobsitychallenge.ui.activity.ShowDetailsActivity
-import com.kevcordova.jobsitychallenge.ui.adapters.ShowListRecyclerViewAdapter
+import com.kevcordova.jobsitychallenge.ui.adapters.ShowAndEpisodeHomeRecyclerViewAdapter
 import com.kevcordova.jobsitychallenge.ui.adapters.base.BaseRecyclerViewItem
 import com.kevcordova.jobsitychallenge.usescases.GetAllShowUseCase
 
@@ -30,6 +31,9 @@ import com.kevcordova.jobsitychallenge.usescases.GetAllShowUseCase
  * create an instance of this fragment.
  */
 class ShowListFragment : Fragment() {
+    companion object {
+        const val PARAM_SHOW_ITEM = "PARAM_SHOW_ITEM"
+    }
 
     private val remoteShowDataSource: RemoteShowDataSource by lazy {
         ShowRetrofitDataSource(ShowRequest)
@@ -42,7 +46,7 @@ class ShowListFragment : Fragment() {
         GetAllShowUseCase(showRepository)
     }
 
-    private val showListRecyclerViewAdapter = ShowListRecyclerViewAdapter()
+    private val showListRecyclerViewAdapter = ShowAndEpisodeHomeRecyclerViewAdapter()
 
     private val showSharedViewModel: ShowViewModel by activityViewModels()
     private lateinit var binding: FragmentShowListBinding
@@ -62,6 +66,7 @@ class ShowListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.show_list)
         binding.showListRecyclerview.adapter = showListRecyclerViewAdapter
+        manageItemClickListener()
 
         showSharedViewModel.showListEvent.observe(
             viewLifecycleOwner,
@@ -86,6 +91,18 @@ class ShowListFragment : Fragment() {
                     View.GONE
                 ShowViewModel.ShowListNavigation.ShowLoading -> binding.progressLinearShowList.visibility =
                     View.VISIBLE
+            }
+        }
+    }
+
+    private fun manageItemClickListener() {
+        showListRecyclerViewAdapter.itemClickListener = { _, item, _ ->
+            val showRecyclerViewItem: BaseRecyclerViewItem.ShowRecyclerViewItem? = if (item is BaseRecyclerViewItem.ShowRecyclerViewItem) item else null
+            showRecyclerViewItem?.run {
+                val intent = Intent(activity, ShowDetailsActivity::class.java).apply {
+                    putExtra(PARAM_SHOW_ITEM, this@run.toParcelable())
+                }
+                startActivity(intent)
             }
         }
     }
