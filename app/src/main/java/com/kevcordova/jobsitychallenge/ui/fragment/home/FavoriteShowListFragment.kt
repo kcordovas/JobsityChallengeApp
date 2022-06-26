@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.kevcordova.jobsitychallenge.R
 import com.kevcordova.jobsitychallenge.databinding.FragmentFavoriteShowListBinding
-import com.kevcordova.jobsitychallenge.ui.fragment.presenter.ShowViewModel
+import com.kevcordova.jobsitychallenge.presenter.ShowViewModel
 
 /**
  * A simple [Fragment] subclass.
