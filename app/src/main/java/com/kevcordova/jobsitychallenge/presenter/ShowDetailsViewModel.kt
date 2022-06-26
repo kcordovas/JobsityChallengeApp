@@ -11,13 +11,12 @@ import com.kevcordova.jobsitychallenge.usescases.GetEpisodeByShowIdUseCase
 import com.kevcordova.jobsitychallenge.usescases.GetShowByIdUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.lang.NullPointerException
 
 class ShowDetailsViewModel : ViewModelBase() {
-    private var getShowByIdUseCase : GetShowByIdUseCase? = null
-    private var getShowEpisodeListByIdUseCase : GetEpisodeByShowIdUseCase? = null
+    private var getShowByIdUseCase: GetShowByIdUseCase? = null
+    private var getShowEpisodeListByIdUseCase: GetEpisodeByShowIdUseCase? = null
 
     private lateinit var _showParcelableReceived: ShowParcelable
 
@@ -28,7 +27,10 @@ class ShowDetailsViewModel : ViewModelBase() {
         _showParcelableReceived = showParcelable
     }
 
-    fun generateUseCase(getShowByIdUseCase: GetShowByIdUseCase, getEpisodeByShowIdUseCase: GetEpisodeByShowIdUseCase) {
+    fun generateUseCase(
+        getShowByIdUseCase: GetShowByIdUseCase,
+        getEpisodeByShowIdUseCase: GetEpisodeByShowIdUseCase
+    ) {
         this.getShowByIdUseCase = getShowByIdUseCase
         this.getShowEpisodeListByIdUseCase = getEpisodeByShowIdUseCase
     }
@@ -37,8 +39,10 @@ class ShowDetailsViewModel : ViewModelBase() {
     fun buildShowDetail() {
         _events.value = generateEvent(ShowDetailsNavigation.ShowLoading)
         viewModelScope.launch {
-            val showDeferred = viewModelScope.async { getShowByIdUseCase?.invoke(_showParcelableReceived.id) }
-            val episodeListDeferred = viewModelScope.async { getShowEpisodeListByIdUseCase?.invoke(_showParcelableReceived.id) }
+            val showDeferred =
+                viewModelScope.async { getShowByIdUseCase?.invoke(_showParcelableReceived.id) }
+            val episodeListDeferred =
+                viewModelScope.async { getShowEpisodeListByIdUseCase?.invoke(_showParcelableReceived.id) }
 
             val show = showDeferred.await()
             val episodeList = episodeListDeferred.await()
@@ -46,15 +50,19 @@ class ShowDetailsViewModel : ViewModelBase() {
             if (show != null) {
                 _events.value = generateEvent(ShowDetailsNavigation.ShowDetailHeader(show))
             } else {
-                _events.value = generateEvent(ShowDetailsNavigation.ShowDetailError(
-                    NullPointerException("Show Object is null")
-                ))
+                _events.value = generateEvent(
+                    ShowDetailsNavigation.ShowDetailError(
+                        NullPointerException("Show Object is null")
+                    )
+                )
             }
 
             if (episodeList.isNullOrEmpty()) {
-                _events.value = generateEvent(ShowDetailsNavigation.ShowDetailError(
-                    NullPointerException("Episode List is null or blank")
-                ))
+                _events.value = generateEvent(
+                    ShowDetailsNavigation.ShowDetailError(
+                        NullPointerException("Episode List is null or blank")
+                    )
+                )
             } else {
                 _events.value = generateEvent(
                     ShowDetailsNavigation.ShowEpisodeListOnRecyclerView(
@@ -66,7 +74,7 @@ class ShowDetailsViewModel : ViewModelBase() {
         }
     }
 
-    private fun generateEpisodeListRecyclerViewItems(episodeList: List<Episode>) : List<BaseRecyclerViewItem> {
+    private fun generateEpisodeListRecyclerViewItems(episodeList: List<Episode>): List<BaseRecyclerViewItem> {
         val episodeListRecyclerView = mutableListOf<BaseRecyclerViewItem>()
         var seasonActual = -1
         var idTitle = 1
@@ -75,23 +83,27 @@ class ShowDetailsViewModel : ViewModelBase() {
                 seasonActual != episode.season -> {
                     seasonActual = episode.season
                     episodeListRecyclerView.add(BaseRecyclerViewItem.Title(idTitle, seasonActual))
-                    episodeListRecyclerView.add(BaseRecyclerViewItem.EpisodeRecyclerViewItem(
-                        episode.id,
-                        episode.name,
-                        episode.numberChapter,
-                        episode.season,
-                        episode.imageUrl
-                    ))
+                    episodeListRecyclerView.add(
+                        BaseRecyclerViewItem.EpisodeRecyclerViewItem(
+                            episode.id,
+                            episode.name,
+                            episode.numberChapter,
+                            episode.season,
+                            episode.imageUrl
+                        )
+                    )
                     idTitle++
                 }
                 seasonActual == episode.season -> {
-                    episodeListRecyclerView.add(BaseRecyclerViewItem.EpisodeRecyclerViewItem(
-                        episode.id,
-                        episode.name,
-                        episode.numberChapter,
-                        episode.season,
-                        episode.imageUrl
-                    ))
+                    episodeListRecyclerView.add(
+                        BaseRecyclerViewItem.EpisodeRecyclerViewItem(
+                            episode.id,
+                            episode.name,
+                            episode.numberChapter,
+                            episode.season,
+                            episode.imageUrl
+                        )
+                    )
                 }
             }
         }
@@ -100,7 +112,9 @@ class ShowDetailsViewModel : ViewModelBase() {
 
     sealed class ShowDetailsNavigation {
         data class ShowDetailError(val throwable: Throwable) : ShowDetailsNavigation()
-        data class ShowEpisodeListOnRecyclerView(val episodeRecyclerViewItem: List<BaseRecyclerViewItem>) : ShowDetailsNavigation()
+        data class ShowEpisodeListOnRecyclerView(val episodeRecyclerViewItem: List<BaseRecyclerViewItem>) :
+            ShowDetailsNavigation()
+
         data class ShowDetailHeader(val show: Show) : ShowDetailsNavigation()
         object ShowLoading : ShowDetailsNavigation()
         object HideLoading : ShowDetailsNavigation()

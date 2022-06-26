@@ -9,3 +9,12 @@ data class ShowParcelable(
     val title: String,
     val imageUrl: String
 ) : Parcelable
+
+@Parcelize
+data class EpisodeParcelable(
+    val id: Int,
+    val name: String,
+    val numberChapter: Int,
+    val season: Int,
+    val imageUrl: String
+) : Parcelable
