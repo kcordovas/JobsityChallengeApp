@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.kevcordova.jobsitychallenge.R
 import com.kevcordova.jobsitychallenge.databinding.FragmentEpisodeInfoFullscreenBinding
-import com.kevcordova.jobsitychallenge.ui.fragment.presenter.EpisodeViewModel
+import com.kevcordova.jobsitychallenge.presenter.EpisodeViewModel
 
 /**
  * An example full-screen fragment that shows and hides the system UI (i.e.

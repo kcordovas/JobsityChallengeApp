@@ -1,4 +1,4 @@
-package com.kevcordova.jobsitychallenge.ui.activity.presenter
+package com.kevcordova.jobsitychallenge.presenter
 
 import androidx.lifecycle.ViewModel
 

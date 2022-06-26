@@ -71,6 +71,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.aar'])
     // Project dependencies
     implementation project(":domain")
+    implementation project(":data")
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     def lifecycle_version = "2.5.0-rc02"

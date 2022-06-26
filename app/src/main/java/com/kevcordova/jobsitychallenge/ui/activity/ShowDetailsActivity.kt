@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.kevcordova.jobsitychallenge.R
 import com.kevcordova.jobsitychallenge.databinding.ActivityShowDetailsBinding
-import com.kevcordova.jobsitychallenge.ui.activity.presenter.ShowDetailsViewModel
+import com.kevcordova.jobsitychallenge.presenter.ShowDetailsViewModel
 
 class ShowDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShowDetailsBinding
