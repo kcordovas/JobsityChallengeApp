@@ -110,7 +110,7 @@
                 android:layout_marginEnd="@dimen/margin_16"
                 android:contentDescription="@string/content_description_favorite_icon"
                 android:onClick="@{() -> activity.addToFavoriteShow()}"
-                android:src="@drawable/ic_round_star"
+                android:src="@drawable/ic_round_star_border"
                 app:layout_constraintBottom_toBottomOf="@id/card_cover_show_detail"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/card_cover_show_detail" />

@@ -29,6 +29,13 @@ static formatVersionName(versionMajor, versionMinor, versionPatch, versionClassi
     return versionName;
 }
 
+ext {
+    daggerVersion = "2.38"
+
+    daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+    daggerLibrary = "com.google.dagger:dagger:$daggerVersion"
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

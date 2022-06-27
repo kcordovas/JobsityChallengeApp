@@ -6,7 +6,7 @@ plugins {
 }
 
 def versionMajor = 1
-def versionMinor = 0
+def versionMinor = 2
 def versionPatch = 0
 // Put name as beta or alpha, if require
 def versionClassifier = null
@@ -93,6 +93,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
     // Annotation processor
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+
+    //Dagger
+    implementation daggerLibrary
+    kapt daggerCompiler
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

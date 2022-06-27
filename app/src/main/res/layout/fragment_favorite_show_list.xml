@@ -4,70 +4,102 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.kevcordova.jobsitychallenge.presenter.ShowViewModel" />
+        <variable
+            name="fragment"
+            type="com.kevcordova.jobsitychallenge.ui.fragment.home.FavoriteShowListFragment" />
     </data>
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/margin_16">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_middle_favorite_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintGuide_percent="0.5"
-                android:orientation="horizontal"/>
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_middle_favorite_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.5"
+            android:orientation="horizontal"/>
 
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/chip_sort_favorite_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/favorite_show_list_recyclerview"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-            <ImageView
-                android:id="@+id/image_empty_favorite_list"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/il_empty_two_person"
-                android:importantForAccessibility="no"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/guideline_middle_favorite_list"/>
-            <TextView
-                android:id="@+id/text_title_empty_favorite_list"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/msg_not_have_favorite_list"
-                android:layout_marginTop="@dimen/margin_16"
-                android:textAlignment="center"
-                style="?attr/textAppearanceHeadline6"
-                app:layout_constraintTop_toBottomOf="@id/guideline_middle_favorite_list"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/progress_circular_favorite_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="@id/guideline_middle_favorite_list"
-                app:layout_constraintBottom_toBottomOf="@id/guideline_middle_favorite_list"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                tools:listitem="@layout/item_show_layout"
+                tools:itemCount="12"/>
+        </ScrollView>
 
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/empty_favorite_list_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="image_empty_favorite_list, text_title_empty_favorite_list"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+        <ImageView
+            android:id="@+id/image_empty_favorite_list"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/il_empty_two_person"
+            android:importantForAccessibility="no"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/guideline_middle_favorite_list"/>
+        <TextView
+            android:id="@+id/text_title_empty_favorite_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/msg_not_have_favorite_list"
+            android:layout_marginTop="@dimen/margin_16"
+            android:textAlignment="center"
+            style="?attr/textAppearanceHeadline6"
+            app:layout_constraintTop_toBottomOf="@id/guideline_middle_favorite_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_linear_favorite_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/refresh_favorite_list_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_16"
+            android:contentDescription="@string/episode_info"
+            android:src="@drawable/ic_round_refresh"
+            android:onClick="@{() -> viewModel.listShowFavorite()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_sort_favorite_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sort"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> fragment.orderByAscendName()}"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_16"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:chipIcon="@drawable/ic_round_sort"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/empty_favorite_list_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="image_empty_favorite_list, text_title_empty_favorite_list"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

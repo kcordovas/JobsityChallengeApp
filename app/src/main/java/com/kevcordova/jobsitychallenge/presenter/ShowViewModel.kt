@@ -7,6 +7,7 @@ import com.kevcordova.jobsitychallenge.model.mappers.toShowRecyclerViewItem
 import com.kevcordova.jobsitychallenge.ui.adapters.base.BaseRecyclerViewItem
 import com.kevcordova.jobsitychallenge.usescases.GetAllShowUseCase
 import com.kevcordova.jobsitychallenge.usescases.SearchByNameShowUseCase
+import com.kevcordova.jobsitychallenge.utils.FavoritePreferences
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.lang.NullPointerException
@@ -17,6 +18,9 @@ class ShowViewModel : ViewModelBase() {
 
     private val _showListEvent = MutableLiveData<Event<ShowListNavigation>>()
     val showListEvent: LiveData<Event<ShowListNavigation>> get() = _showListEvent
+
+    private val _showFavoriteListEvent = MutableLiveData<Event<ShowListNavigation>>()
+    val showFavoriteListEvent: LiveData<Event<ShowListNavigation>> get() = _showFavoriteListEvent
 
     fun setUseCase(
         getAllShowUseCase: GetAllShowUseCase,
@@ -60,6 +64,21 @@ class ShowViewModel : ViewModelBase() {
                     generateEvent(ShowListNavigation.ShowListAsRecyclerViewItem(list.map { it.toShowRecyclerViewItem() }))
             }
             _showListEvent.value = generateEvent(ShowListNavigation.HideLoading)
+        }
+    }
+
+    fun listShowFavorite() {
+        _showFavoriteListEvent.value = generateEvent(ShowListNavigation.ShowLoading)
+        viewModelScope.launch {
+            val favoriteList = allShowUseCase?.invoke(FavoritePreferences.getFavoriteListShow().favoriteList)
+            if (favoriteList != null) {
+                _showFavoriteListEvent.value =
+                    generateEvent(ShowListNavigation.ShowListAsRecyclerViewItem(favoriteList.map { it.toShowRecyclerViewItem() }))
+            } else {
+                _showFavoriteListEvent.value =
+                    generateEvent(ShowListNavigation.ShowListError(NullPointerException("Favorite List is Null or Empty")))
+            }
+            _showFavoriteListEvent.value = generateEvent(ShowListNavigation.HideLoading)
         }
     }
 
