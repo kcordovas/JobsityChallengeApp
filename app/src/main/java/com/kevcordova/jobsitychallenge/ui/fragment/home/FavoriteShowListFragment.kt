@@ -49,6 +49,7 @@ class FavoriteShowListFragment : Fragment() {
     }
 
     private val showListRecyclerViewAdapter = ShowAndEpisodeHomeRecyclerViewAdapter()
+    private val showFavoriteList = mutableListOf<BaseRecyclerViewItem.ShowRecyclerViewItem>()
 
     private val showSharedViewModel: ShowViewModel by activityViewModels()
     private lateinit var binding: FragmentFavoriteShowListBinding
@@ -65,6 +66,7 @@ class FavoriteShowListFragment : Fragment() {
             false
         )
         binding.viewModel = showSharedViewModel
+        binding.fragment = this
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -92,7 +94,9 @@ class FavoriteShowListFragment : Fragment() {
         events.getContentIfNotHandle()?.let { nav ->
             when (nav) {
                 is ShowViewModel.ShowListNavigation.ShowListAsRecyclerViewItem -> nav.run {
-                    showListRecyclerViewAdapter.items = showList
+                    showFavoriteList.clear()
+                    showFavoriteList.addAll(showList)
+                    showListRecyclerViewAdapter.items = showFavoriteList
                 }
                 is ShowViewModel.ShowListNavigation.ShowListError -> nav.run {
                     activity?.showShortToast(throwable.message ?: "Error on list")
@@ -102,6 +106,12 @@ class FavoriteShowListFragment : Fragment() {
                 ShowViewModel.ShowListNavigation.ShowLoading -> binding.progressLinearFavoriteList.visibility =
                     View.VISIBLE
             }
+        }
+    }
+
+    fun orderByAscendName() {
+        showListRecyclerViewAdapter.items = showFavoriteList.sortedBy {
+            it.title
         }
     }
 

@@ -7,6 +7,9 @@
         <variable
             name="viewModel"
             type="com.kevcordova.jobsitychallenge.presenter.ShowViewModel" />
+        <variable
+            name="fragment"
+            type="com.kevcordova.jobsitychallenge.ui.fragment.home.FavoriteShowListFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +25,7 @@
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chip_sort_favorite_list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
             <androidx.recyclerview.widget.RecyclerView
@@ -77,6 +80,20 @@
             android:onClick="@{() -> viewModel.listShowFavorite()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_sort_favorite_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sort"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> fragment.orderByAscendName()}"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_16"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:chipIcon="@drawable/ic_round_sort"/>
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/empty_favorite_list_group"
