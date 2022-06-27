@@ -27,7 +27,11 @@ object FavoritePreferences {
 
     fun getFavoriteListShow() : FavoriteListClass {
         val lisOfFavoriteJson = sharedPref.getString(PREF_TAG_FAVORITE_LIST)
-        return gson.fromJson(lisOfFavoriteJson, FavoriteListClass::class.java)
+        var favoriteListClass = gson.fromJson(lisOfFavoriteJson, FavoriteListClass::class.java)
+        if (favoriteListClass == null) {
+            favoriteListClass = FavoriteListClass()
+        }
+        return favoriteListClass
     }
 
     fun isShowSavedInFavorite(idShow: Int) = getFavoriteListShow().favoriteList.contains(idShow)
