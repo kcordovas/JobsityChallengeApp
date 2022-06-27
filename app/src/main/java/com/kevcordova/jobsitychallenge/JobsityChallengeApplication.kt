@@ -1,28 +1,23 @@
 package com.kevcordova.jobsitychallenge
 
 import android.app.Application
-import com.kevcordova.jobsitychallenge.api.EpisodeRequest
-import com.kevcordova.jobsitychallenge.api.EpisodeRetrofitDataSource
-import com.kevcordova.jobsitychallenge.api.ShowRequest
-import com.kevcordova.jobsitychallenge.api.ShowRetrofitDataSource
-import com.kevcordova.jobsitychallenge.data.EpisodeRepository
-import com.kevcordova.jobsitychallenge.data.RemoteEpisodeDataSource
-import com.kevcordova.jobsitychallenge.data.RemoteShowDataSource
-import com.kevcordova.jobsitychallenge.data.ShowRepository
+import com.example.baseandroidmodulekevcordova.storage.KSharedPreferences
 
 class JobsityChallengeApplication : Application() {
+    companion object {
+        private const val PREFERENCE_NAME = "JobsityChallengeApplication-SharedPreferences"
 
-    private val remoteShowDataSource: RemoteShowDataSource by lazy {
-        ShowRetrofitDataSource(ShowRequest)
-    }
-    private val remoteEpisodeDataSource: RemoteEpisodeDataSource by lazy {
-        EpisodeRetrofitDataSource(EpisodeRequest)
+        private lateinit var instance: JobsityChallengeApplication
+        fun getApplication(): JobsityChallengeApplication = instance
+
+        private lateinit var preferences: KSharedPreferences
     }
 
-    val showRepository : ShowRepository by lazy {
-        ShowRepository(remoteShowDataSource)
-    }
-    val episodeRepository : EpisodeRepository by lazy {
-        EpisodeRepository(remoteEpisodeDataSource)
+    val sharedPref: KSharedPreferences get() = preferences
+
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+        preferences = KSharedPreferences(this, PREFERENCE_NAME)
     }
 }

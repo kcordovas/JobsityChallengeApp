@@ -31,6 +31,7 @@ import com.kevcordova.jobsitychallenge.ui.fragment.home.ShowListFragment
 import com.kevcordova.jobsitychallenge.usescases.GetEpisodeByShowIdUseCase
 import com.kevcordova.jobsitychallenge.usescases.GetShowByIdUseCase
 import com.kevcordova.jobsitychallenge.utils.DateUtils
+import com.kevcordova.jobsitychallenge.utils.FavoritePreferences
 import java.util.*
 
 class ShowDetailsActivity : AppCompatActivity() {
@@ -77,6 +78,7 @@ class ShowDetailsActivity : AppCompatActivity() {
         binding.activity = this
         _showParcelableReceived = intent.getParcelableExtra(ShowListFragment.PARAM_SHOW_ITEM)
         binding.episodesListRecyclerviewShowDetail.adapter = recyclerViewAdapter
+        bindFavoriteStatus()
         manageEpisodeItemClickListener()
         if (_showParcelableReceived != null) {
             viewModel.run {
@@ -150,6 +152,23 @@ class ShowDetailsActivity : AppCompatActivity() {
     }
 
     fun addToFavoriteShow() {
+        if (FavoritePreferences.isShowSavedInFavorite(showParcelableReceived.id)) {
+            binding.favoriteFabShowDetail.setImageResource(R.drawable.ic_round_star_border)
+            FavoritePreferences.deleteFavorite(showParcelableReceived.id)
+            showShortToast(getString(R.string.msg_delete_show_favorite))
+        } else {
+            binding.favoriteFabShowDetail.setImageResource(R.drawable.ic_round_star)
+            FavoritePreferences.saveFavoriteShow(showParcelableReceived.id)
+            showShortToast(getString(R.string.msg_add_show_favorite))
+        }
+    }
+
+    private fun bindFavoriteStatus() {
+        if (FavoritePreferences.isShowSavedInFavorite(showParcelableReceived.id)) {
+            binding.favoriteFabShowDetail.setImageResource(R.drawable.ic_round_star)
+        } else {
+            binding.favoriteFabShowDetail.setImageResource(R.drawable.ic_round_star_border)
+        }
     }
 
     fun backPage() {
