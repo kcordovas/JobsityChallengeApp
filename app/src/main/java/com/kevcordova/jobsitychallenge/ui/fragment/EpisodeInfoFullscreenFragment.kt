@@ -7,19 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import com.example.baseandroidmodulekevcordova.extensions.bindGlideImage
+import com.kevcordova.jobsitychallenge.JobsityChallengeApplication
 import com.kevcordova.jobsitychallenge.R
-import com.kevcordova.jobsitychallenge.api.EpisodeRequest
-import com.kevcordova.jobsitychallenge.api.EpisodeRetrofitDataSource
-import com.kevcordova.jobsitychallenge.data.EpisodeRepository
-import com.kevcordova.jobsitychallenge.data.RemoteEpisodeDataSource
 import com.kevcordova.jobsitychallenge.databinding.FragmentEpisodeInfoFullscreenBinding
+import com.kevcordova.jobsitychallenge.dependencyinyection.UseCaseComponent
 import com.kevcordova.jobsitychallenge.domain.Episode
 import com.kevcordova.jobsitychallenge.extensions.fromHtml
 import com.kevcordova.jobsitychallenge.model.parcelables.EpisodeParcelable
 import com.kevcordova.jobsitychallenge.presenter.EpisodeViewModel
 import com.kevcordova.jobsitychallenge.presenter.Event
 import com.kevcordova.jobsitychallenge.ui.activity.ShowDetailsActivity
-import com.kevcordova.jobsitychallenge.usescases.GetEpisodeBySeasonAndChapter
 
 /**
  * An example full-screen fragment that shows and hides the system UI (i.e.
@@ -38,20 +35,12 @@ class EpisodeInfoFullscreenFragment : DialogFragment() {
             }
     }
 
-    private val remoteEpisodeDataSource: RemoteEpisodeDataSource by lazy {
-        EpisodeRetrofitDataSource(EpisodeRequest)
-    }
-
-    private val episodeRepository: EpisodeRepository by lazy {
-        EpisodeRepository(remoteEpisodeDataSource)
-    }
-
-    private val getEpisodeBySeasonAndChapter: GetEpisodeBySeasonAndChapter by lazy {
-        GetEpisodeBySeasonAndChapter(episodeRepository)
+    private val component: UseCaseComponent by lazy {
+        JobsityChallengeApplication.getApplication().useCaseComponent
     }
 
     private val viewModel by lazy {
-        EpisodeViewModel(getEpisodeBySeasonAndChapter)
+        EpisodeViewModel(component.getEpisodeBySeasonAndChapter)
     }
 
     private var _episodeParcelable: EpisodeParcelable? = null

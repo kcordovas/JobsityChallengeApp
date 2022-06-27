@@ -1,6 +1,5 @@
 package com.kevcordova.jobsitychallenge.ui.fragment.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,23 +7,13 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.baseandroidmodulekevcordova.extensions.showShortToast
 import com.kevcordova.jobsitychallenge.R
-import com.kevcordova.jobsitychallenge.api.ShowRequest
-import com.kevcordova.jobsitychallenge.api.ShowRetrofitDataSource
-import com.kevcordova.jobsitychallenge.data.RemoteShowDataSource
-import com.kevcordova.jobsitychallenge.data.ShowRepository
 import com.kevcordova.jobsitychallenge.databinding.FragmentFavoriteShowListBinding
-import com.kevcordova.jobsitychallenge.model.mappers.toParcelable
 import com.kevcordova.jobsitychallenge.presenter.Event
 import com.kevcordova.jobsitychallenge.presenter.ShowViewModel
-import com.kevcordova.jobsitychallenge.ui.activity.ShowDetailsActivity
-import com.kevcordova.jobsitychallenge.ui.adapters.ShowAndEpisodeHomeRecyclerViewAdapter
 import com.kevcordova.jobsitychallenge.ui.adapters.base.BaseRecyclerViewItem
-import com.kevcordova.jobsitychallenge.usescases.GetAllShowUseCase
-import com.kevcordova.jobsitychallenge.usescases.SearchByNameShowUseCase
 import com.kevcordova.jobsitychallenge.utils.FavoritePreferences
 
 /**
@@ -32,26 +21,10 @@ import com.kevcordova.jobsitychallenge.utils.FavoritePreferences
  * Use the [FavoriteShowListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FavoriteShowListFragment : Fragment() {
+class FavoriteShowListFragment : HomeBaseFragment() {
 
-    private val remoteShowDataSource: RemoteShowDataSource by lazy {
-        ShowRetrofitDataSource(ShowRequest)
-    }
-    private val showRepository: ShowRepository by lazy {
-        ShowRepository(remoteShowDataSource)
-    }
-
-    private val getAllShowUseCase: GetAllShowUseCase by lazy {
-        GetAllShowUseCase(showRepository)
-    }
-    private val getSearchByNameShowUseCase: SearchByNameShowUseCase by lazy {
-        SearchByNameShowUseCase(showRepository)
-    }
-
-    private val showListRecyclerViewAdapter = ShowAndEpisodeHomeRecyclerViewAdapter()
     private val showFavoriteList = mutableListOf<BaseRecyclerViewItem.ShowRecyclerViewItem>()
 
-    private val showSharedViewModel: ShowViewModel by activityViewModels()
     private lateinit var binding: FragmentFavoriteShowListBinding
     private val favoritePreferences = FavoritePreferences
 
@@ -77,10 +50,9 @@ class FavoriteShowListFragment : Fragment() {
             getString(R.string.my_favorite_show)
         bindUiStatusOfFavorite()
         binding.favoriteShowListRecyclerview.adapter = showListRecyclerViewAdapter
-        manageItemClickListener()
 
         showSharedViewModel.run {
-            setUseCase(getAllShowUseCase, getSearchByNameShowUseCase)
+            setUseCase(component.getAllShowUseCase, component.searchByNameUseCase)
             listShowFavorite()
         }
         showSharedViewModel.showFavoriteListEvent.observe(
@@ -119,19 +91,6 @@ class FavoriteShowListFragment : Fragment() {
         if (favoritePreferences.getFavoriteListShow().favoriteList.isEmpty()) {
             binding.emptyFavoriteListGroup.visibility = View.VISIBLE
             binding.favoriteShowListRecyclerview.visibility = View.GONE
-        }
-    }
-
-    private fun manageItemClickListener() {
-        showListRecyclerViewAdapter.itemClickListener = { _, item, _ ->
-            val showRecyclerViewItem: BaseRecyclerViewItem.ShowRecyclerViewItem? =
-                if (item is BaseRecyclerViewItem.ShowRecyclerViewItem) item else null
-            showRecyclerViewItem?.run {
-                val intent = Intent(activity, ShowDetailsActivity::class.java).apply {
-                    putExtra(ShowListFragment.PARAM_SHOW_ITEM, this@run.toParcelable())
-                }
-                startActivity(intent)
-            }
         }
     }
 }

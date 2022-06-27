@@ -7,17 +7,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.baseandroidmodulekevcordova.extensions.bindGlideImage
 import com.example.baseandroidmodulekevcordova.extensions.showShortToast
+import com.kevcordova.jobsitychallenge.JobsityChallengeApplication
 import com.kevcordova.jobsitychallenge.R
-import com.kevcordova.jobsitychallenge.api.EpisodeRequest
-import com.kevcordova.jobsitychallenge.api.EpisodeRetrofitDataSource
-import com.kevcordova.jobsitychallenge.api.ShowRequest
-import com.kevcordova.jobsitychallenge.api.ShowRetrofitDataSource
 import com.kevcordova.jobsitychallenge.constants.JobsityChallengeConstants
-import com.kevcordova.jobsitychallenge.data.EpisodeRepository
-import com.kevcordova.jobsitychallenge.data.RemoteEpisodeDataSource
-import com.kevcordova.jobsitychallenge.data.RemoteShowDataSource
-import com.kevcordova.jobsitychallenge.data.ShowRepository
 import com.kevcordova.jobsitychallenge.databinding.ActivityShowDetailsBinding
+import com.kevcordova.jobsitychallenge.dependencyinyection.UseCaseComponent
 import com.kevcordova.jobsitychallenge.domain.Show
 import com.kevcordova.jobsitychallenge.extensions.fromHtml
 import com.kevcordova.jobsitychallenge.model.mappers.toParcelable
@@ -28,8 +22,6 @@ import com.kevcordova.jobsitychallenge.ui.adapters.ShowAndEpisodeHomeRecyclerVie
 import com.kevcordova.jobsitychallenge.ui.adapters.base.BaseRecyclerViewItem
 import com.kevcordova.jobsitychallenge.ui.fragment.EpisodeInfoFullscreenFragment
 import com.kevcordova.jobsitychallenge.ui.fragment.home.ShowListFragment
-import com.kevcordova.jobsitychallenge.usescases.GetEpisodeByShowIdUseCase
-import com.kevcordova.jobsitychallenge.usescases.GetShowByIdUseCase
 import com.kevcordova.jobsitychallenge.utils.DateUtils
 import com.kevcordova.jobsitychallenge.utils.FavoritePreferences
 import java.util.*
@@ -41,23 +33,8 @@ class ShowDetailsActivity : AppCompatActivity() {
         const val PARAM_SHOW_ID = "PARAM_SHOW_ID"
     }
 
-    private val remoteShowDataSource: RemoteShowDataSource by lazy {
-        ShowRetrofitDataSource(ShowRequest)
-    }
-    private val remoteEpisodeDataSource: RemoteEpisodeDataSource by lazy {
-        EpisodeRetrofitDataSource(EpisodeRequest)
-    }
-    private val showRepository: ShowRepository by lazy {
-        ShowRepository(remoteShowDataSource)
-    }
-    private val episodeRepository: EpisodeRepository by lazy {
-        EpisodeRepository(remoteEpisodeDataSource)
-    }
-    private val getShowByIdUseCase: GetShowByIdUseCase by lazy {
-        GetShowByIdUseCase(showRepository)
-    }
-    private val getShowEpisodeListByIdUseCase: GetEpisodeByShowIdUseCase by lazy {
-        GetEpisodeByShowIdUseCase(episodeRepository)
+    private val component: UseCaseComponent by lazy {
+        JobsityChallengeApplication.getApplication().useCaseComponent
     }
 
     private val viewModel by lazy {
@@ -87,7 +64,7 @@ class ShowDetailsActivity : AppCompatActivity() {
                     Observer(this@ShowDetailsActivity::manageShowDetailsEvent)
                 )
                 passParcelable(showParcelableReceived)
-                generateUseCase(getShowByIdUseCase, getShowEpisodeListByIdUseCase)
+                generateUseCase(component.getShowByIdUseCase, component.getEpisodeByShowIdUseCase)
                 buildShowDetail()
             }
         } else {
